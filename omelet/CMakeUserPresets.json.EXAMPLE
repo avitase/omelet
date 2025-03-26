@@ -1,0 +1,71 @@
+{
+  "version": 2,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 14,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "common",
+      "hidden": true,
+      "inherits": [
+        "dev-mode",
+        "linux"
+      ],
+      "cacheVariables": {
+        "CMAKE_PREFIX_PATH": "../build/install",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    },
+    {
+      "name": "dev",
+      "inherits": "common",
+      "binaryDir": "${sourceDir}/build/dev",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "dev-clang-tidy",
+      "inherits": [
+        "dev",
+        "clang-tidy"
+      ],
+      "binaryDir": "${sourceDir}/build/dev-clang-tidy",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "profile",
+      "inherits": "common",
+      "binaryDir": "${sourceDir}/build/profile",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      }
+    },
+    {
+      "name": "release",
+      "inherits": "common",
+      "binaryDir": "${sourceDir}/build/release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "dev",
+      "configurePreset": "dev",
+      "configuration": "Debug",
+      "jobs": 8
+    },
+    {
+      "name": "dev-clang-tidy",
+      "configurePreset": "dev-clang-tidy",
+      "configuration": "Debug",
+      "jobs": 8
+    }
+  ]
+}
