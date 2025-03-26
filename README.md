@@ -1,12 +1,20 @@
 # Omlete 🍳
 
-This is a highly opinionated template using *contemporary* C++ to wrap "modern"
-OpenGL, [SDL2][1], [Dear ImGui][2], [glbindings][3], and [GLM][4].
+This is a highly opinionated [CMake][5] template using *contemporary* C++ to wrap "modern" OpenGL, [SDL2][1], [Dear ImGui][2], [glbindings][3], and [GLM][4].
+
+## Template or Library?
+
+Consider this repository as a template that helps you creating a canonical *Hello World* in the context of OpenGL programming: a colorful rotating triangle!
+
+![A colorful rotation triangle](https://github.com/avitase/omelet/blob/main/screenshot.png?raw=true)
+
+In contrast to a library or a full-fledged game engine, this template does note even try to hide OpenGL details from you but instead provides you with a *good* (this is the part that is highly opinionated) starting point with convenient helper functions that wraps, for instance, the annoying VAO/VBO fiddling.
+However, none of the files under [`omlete/`](omlete/) should be considered out of bounds: Open them, read them, change them! (Maybe except for [`omelet/source/glsl_program.cpp`](omelet/source/glsl_program.cpp); that one is a beast.)
 
 ## How to use it?
 
-Checkout the repository **including its various submodules** and build it with [CMake][5]. A layman approach (on Linux🐧)
-is to type:
+Checkout the repository **including its various submodules** and build it with [CMake][5].
+A layman approach (on Linux🐧) is to type:
 
 ```bash
 git clone --recurse-submodules https://github.com/avitase/omelet
@@ -14,27 +22,24 @@ mkdir -p omelet/build && cd omelet/build/
 cmake .. && make -j
 ```
 
-If you have installed [SDL2][1] and OpenGL on your system, this will build [Dear ImGui][2], [glbindings][3],
-and [GLM][4] and finally compile the [template in omelet/](omelet/). (If not, it will fail spectacularly💥)
+If you have installed [SDL2][1] and OpenGL on your system, this will build [Dear ImGui][2], [glbindings][3], and [GLM][4] and finally compile the [template in omelet/](omelet/). (If not, it will fail spectacularly💥)
 
-Compiling the dependencies does take some time but will eventually create an executable under `build/install/bin`. Run
-it, it's safe!✋
+Compiling the dependencies does take some time but will eventually create an executable under `build/install/bin`.
+Run it, it's safe!✋
 
 ```
 ./install/bin/omelete
 ```
 
-You should see a spinning triangle and a [Dear ImGui window][2] with the position of your cursor and an FPS counter.
+You should see a spinning triangle and a [Dear ImGui window][2] with the position of your cursor and an FPS counter. 
 
 ## How to use it properly?
 
-This template will give you a CMake Superbuild that builds [Dear ImGui][2], [glbindings][3], and [GLM][4] as
-dependencies and the actual SDL2/OpenGL template. Typically, building the Superbuild only has to be done once, you can
-then navigate to [`omelete/`](omelet/) (the subdirectory) and start fouling around here.
+This template will give you a CMake Superbuild that builds [Dear ImGui][2], [glbindings][3], and [GLM][4] as dependencies and the actual SDL2/OpenGL template.
+Typically, building the Superbuild only has to be done once, you can then navigate to [`omelete/`](omelet/) (the subdirectory) and start fouling around here.
 
-The subproject [`omelet/`](omelet/) expects to find its dependencies under `build/install`. This happens automatically
-if you use our [CMakeUserPresets.json.EXAMPLE][6] (click on the link to learn more about what this is), e.g., by copying
-it:
+The subproject [`omelet/`](omelet/) expects to find its dependencies under `build/install`.
+This happens automatically if you use our [CMakeUserPresets.json.EXAMPLE][6] (click on the link to learn more about what this is), e.g., by copying it: 
 
 ```bash
 # project root (not omelet/omelet!)
@@ -48,10 +53,9 @@ cmake --preset=release
 cmake --build --preset=release
 ```
 
-Similar to before, this should install everything under `build/install` and you can now navigate to the subproject [
-`omelet/`](omelet/).
-Here, you'll find again a `CMakeUserPresets.json.EXAMPLE` that sets `CMAKE_PREFIX_PATH` for you and exposes two
-presets `dev` and `dev-clang-tidy`. Feel free to change these presets to your own needs and then run, e.g.,
+Similar to before, this should install everything under `build/install` and you can now navigate to the subproject [`omelet/`](omelet/).
+Here, you'll find again a `CMakeUserPresets.json.EXAMPLE` that sets `CMAKE_PREFIX_PATH` for you and exposes two presets `dev` and `dev-clang-tidy`.
+Feel free to change these presets to your own needs and then run, e.g.,
 
 ```bash
 # run this in omelet/omelet
@@ -61,9 +65,8 @@ cmake --build --preset=dev
 
 ## Next steps
 
-Everything you find under [`omelet/`](omelet) is nothing but a template, and you might have to change all files
-eventually. However, consider starting your journey in [`omelet/source/triangle.cpp`](omelet/source/triangle.cpp) and [
-`omelet/source/world.cpp`](omelet/source/world.cpp), and then gradually work yourself through the includes, when needed.
+Everything you find under [`omelet/`](omelet) is nothing but a template, and you might have to change all files eventually.
+However, consider starting your journey in [`omelet/source/triangle.cpp`](omelet/source/triangle.cpp) and [`omelet/source/world.cpp`](omelet/source/world.cpp), and then gradually work yourself through the includes, when needed.
 
 When you feel lost, have a look into [`omelet/source/main.cpp`](omelet/source/main.cpp) where we define
 `int main(int, char**)` and start the life of *the window*.
