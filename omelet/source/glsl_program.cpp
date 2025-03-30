@@ -116,7 +116,8 @@ Program::Program(const std::vector<Shader> &shaders,
             ::gl::glEnableVertexAttribArray(binding_idx);
 
             const auto [attrib_idx, buffer_offset, buffer_stride] = std::visit(
-                [](const auto &attr) {
+                [](const auto &attr)
+                {
                     return std::make_tuple(
                         attr.idx, attr.buffer_offset, attr.buffer_stride);
                 },
@@ -199,17 +200,26 @@ Program::~Program()
     }
 }
 
-::gl::GLint Program::get_uniform_location(const std::string &name) const
+::gl::GLint Program::get_uniform_location(const std::string &name)
 {
-    const ::gl::GLint idx = ::gl::glGetUniformLocation(m_program, name.c_str());
+    if (const auto it = m_uniform_location.find(name);
+        it != m_uniform_location.end())
+    {
+        return it->second;
+    }
+
+    const auto idx = ::gl::glGetUniformLocation(m_program, name.c_str());
     if (idx < 0) {
         throw std::runtime_error("Could not find uniform " + name);
     }
 
+    const auto success = m_uniform_location.emplace(name, idx).second;
+    assert(success);
+
     return idx;
 }
 
-void Program::set_uniform(const std::string &name, const float value) const
+void Program::set_uniform(const std::string &name, const float value)
 {
     set_uniform(name, ::gl::glProgramUniform1f, value);
 }

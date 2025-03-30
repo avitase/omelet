@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <span>
 #include <string>
+#include <unordered_map>
 #include <utility>
 #include <variant>
 #include <vector>
@@ -52,9 +53,10 @@ class Program final
     ::gl::GLuint m_vao{};
     std::vector<VBO> m_vbos;
     ::gl::GLenum m_drawing_mode;
+    std::unordered_map<std::string, ::gl::GLint> m_uniform_location;
     bool m_moved = false;
 
-    ::gl::GLint get_uniform_location(const std::string &name) const;
+    ::gl::GLint get_uniform_location(const std::string &name);
 
     void fill_vbo(std::size_t vbo_idx,
                   const void *data,
@@ -87,14 +89,14 @@ class Program final
 
     ~Program();
 
-    void set_uniform(const std::string &name, auto &&f, auto &&...args) const
+    void set_uniform(const std::string &name, auto &&f, auto &&...args)
     {
         f(m_program,
           get_uniform_location(name),
           std::forward<decltype(args)>(args)...);
     }
 
-    void set_uniform(const std::string &name, float value) const;
+    void set_uniform(const std::string &name, float value);
 
     [[nodiscard]] std::size_t num_vbos() const;
 
