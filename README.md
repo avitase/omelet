@@ -71,6 +71,21 @@ However, consider starting your journey in [`omelet/source/triangle.cpp`](omelet
 When you feel lost, have a look into [`omelet/source/main.cpp`](omelet/source/main.cpp) where we define
 `int main(int, char**)` and start the life of *the window*.
 
+## Seeing link-time errors?
+
+The super build script is not bullet-proof and assumes that all your dependencies that are build during the process are linked statically.
+If this is not possible, one has to adopt the `rpath`, e.g., by adding the following the build recipe:
+
+```
+ExternalProject_Add(
+    omelet
+    [...]
+    CMAKE_ARGS
+        [...]
+        -DCMAKE_INSTALL_RPATH:STRING=<INSTALL_DIR>/lib;<INSTALL_DIR>/lib64
+        -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON
+```
+
 [1]: https://libsdl.org/
 
 [2]: https://github.com/ocornut/imgui
