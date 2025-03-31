@@ -29,7 +29,7 @@ std::string get_sdl_error(const std::string &prefix)
     return msg + "SDL error: " + std::string(SDL_GetError());
 }
 
-Window::Window(const char *title,
+Window::Window(const std::string &title,
                const Size2D<int> size,
                const uint32_t flags,
                const bool multisampling)
@@ -49,7 +49,7 @@ Window::Window(const char *title,
         SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 16);
     }
 
-    m_window = SDL_CreateWindow(title,
+    m_window = SDL_CreateWindow(title.c_str(),
                                 SDL_WINDOWPOS_UNDEFINED,
                                 SDL_WINDOWPOS_UNDEFINED,
                                 size.width,

@@ -17,7 +17,7 @@ class Window final
     void *m_context{nullptr};
 
   public:
-    Window(const char *title,
+    Window(const std::string &title,
            Size2D<int> size,
            uint32_t flags = 0U,
            bool multisampling = true);
