@@ -46,7 +46,6 @@ target_link_libraries(
         omelet_lib
         PUBLIC
         glbinding::glbinding
-        PRIVATE
         glbinding::glbinding-aux
         glm::glm
         OpenGL::GL
