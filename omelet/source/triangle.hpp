@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glm/ext/matrix_float4x4.hpp>
+
 #include "glsl_program.hpp"
 #include "state.hpp"
 
@@ -12,7 +14,7 @@ class Triangle final
   public:
     Triangle();
 
-    void draw(const WorldState &world_state);
+    void draw(const WorldState &world_state, const glm::mat4 &vp);
 };
 
 }  // namespace omelet

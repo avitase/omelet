@@ -6,7 +6,6 @@
 #include <glbinding/gl/boolean.h>
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/functions.h>
-#include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_float4x4.hpp>
 #include <glm/ext/matrix_transform.hpp>
 
@@ -72,34 +71,17 @@ Triangle::Triangle()
 {
 }
 
-void Triangle::draw(const WorldState &world_state)
+void Triangle::draw(const WorldState &world_state, const glm::mat4 &vp)
 {
     ::gl::glViewport(
         0, 0, world_state.window.size.width, world_state.window.size.height);
 
     {
-        const auto w = static_cast<float>(world_state.window.size.width);
-        const auto h = static_cast<float>(world_state.window.size.height);
-
-        const glm::mat4 projection = glm::ortho(/*left=*/-w / 2.F,
-                                                /*right=*/w / 2.F,
-                                                /*bottom=*/-h / 2.F,
-                                                /*top=*/h / 2.F,
-                                                /*zNear=*/0.F,
-                                                /*zFar=*/1.F);
-
-        const auto x0 = static_cast<float>(world_state.window.origin.x);
-        const auto y0 = static_cast<float>(world_state.window.origin.y);
-
-        const glm::mat4 view = glm::lookAt(/*eye=*/glm::vec3(x0, y0, 1.F),
-                                           /*center=*/glm::vec3(x0, y0, 0.F),
-                                           /*up=*/glm::vec3(0.F, 1.F, 0.F));
-
         const auto phi = static_cast<float>(world_state.t);
         const glm::mat4 model =
             glm::rotate(glm::mat4{1.F}, phi, glm::vec3(0.F, 0.F, 1.F));
 
-        const auto mvp = projection * view * model;
+        const auto mvp = vp * model;
 
         m_shader_program.set_uniform("mvp",
                                      ::gl::glProgramUniformMatrix4fv,

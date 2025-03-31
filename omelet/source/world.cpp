@@ -7,6 +7,8 @@
 #include <SDL2/SDL_video.h>
 #include <glbinding/gl/bitfield.h>
 #include <glbinding/gl/functions.h>
+#include <glm/ext/matrix_clip_space.hpp>
+#include <glm/ext/matrix_transform.hpp>
 #include <imgui.h>
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_sdl2.h>
@@ -108,7 +110,22 @@ const WorldState &World::tick(const uint32_t fps)
         }
 
         {
-            m_triangle.draw(m_world_state);
+            const auto w = static_cast<float>(m_world_state.window.size.width);
+            const auto h = static_cast<float>(m_world_state.window.size.height);
+            const auto x0 = static_cast<float>(m_world_state.window.origin.x);
+            const auto y0 = static_cast<float>(m_world_state.window.origin.y);
+
+            const auto vp = glm::ortho(/*left=*/-w / 2.F,
+                                       /*right=*/w / 2.F,
+                                       /*bottom=*/-h / 2.F,
+                                       /*top=*/h / 2.F,
+                                       /*zNear=*/0.F,
+                                       /*zFar=*/1.F)
+                * glm::lookAt(/*eye=*/glm::vec3(x0, y0, 1.F),
+                              /*center=*/glm::vec3(x0, y0, 0.F),
+                              /*up=*/glm::vec3(0.F, 1.F, 0.F));
+
+            m_triangle.draw(m_world_state, vp);
         }
 
         {
