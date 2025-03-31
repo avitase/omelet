@@ -11,6 +11,7 @@
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_sdl2.h>
 
+#include "events.hpp"
 #include "fonts.hpp"
 #include "overlays.hpp"
 #include "state.hpp"
@@ -24,59 +25,25 @@ namespace
 {
 void handle_event(const SDL_Event &event, WorldState &world_state)
 {
-    auto &[origin, size, dragging] = world_state.window;
-    auto &mouse = world_state.mouse;
-
     switch (event.type) {
         case SDL_QUIT: {
             world_state.running = false;
         } break;
 
         case SDL_WINDOWEVENT: {
-            switch (event.window.event) {
-                case SDL_WINDOWEVENT_RESIZED: {
-                    size.width = event.window.data1;
-                    size.height = event.window.data2;
-                } break;
-                case SDL_WINDOWEVENT_ENTER: {
-                    mouse.inside_window = true;
-                } break;
-                case SDL_WINDOWEVENT_LEAVE: {
-                    mouse.inside_window = false;
-                } break;
-                default:;
-            }
+            on_window_event(event.window, world_state);
         } break;
 
         case SDL_MOUSEBUTTONDOWN: {
-            switch (event.button.button) {
-                case SDL_BUTTON_LEFT: {
-                    dragging = not mouse.inside_any_overlay;
-                    mouse.button_pressed = MouseButton::left;
-                    mouse.double_click = event.button.clicks > 1;
-                } break;
-                case SDL_BUTTON_RIGHT: {
-                    mouse.button_pressed = MouseButton::right;
-                    mouse.double_click = event.button.clicks > 1;
-                } break;
-                default:;
-            }
+            on_mouse_button_down(event.button, world_state);
         } break;
 
         case SDL_MOUSEBUTTONUP: {
-            switch (event.button.button) {
-                case SDL_BUTTON_LEFT: {
-                    dragging = false;
-                } break;
-                default:;
-            }
+            on_mouse_button_up(event.button, world_state);
         } break;
 
         case SDL_MOUSEMOTION: {
-            if (dragging) {
-                origin.x -= event.motion.xrel;
-                origin.y += event.motion.yrel;
-            }
+            on_mouse_motion(event.motion, world_state);
         } break;
 
         default:;

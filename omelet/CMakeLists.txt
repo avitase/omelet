@@ -16,6 +16,7 @@ include(cmake/variables.cmake)
 
 add_library(
         omelet_lib OBJECT
+        source/events.cpp
         source/fonts.cpp
         source/glsl_program.cpp
         source/triangle.cpp
