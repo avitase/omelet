@@ -6,11 +6,9 @@
 #include <glbinding/gl/boolean.h>
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/functions.h>
-
-// NOLINTBEGIN(misc-include-cleaner)
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/mat4x4.hpp>
-// NOLINTEND(misc-include-cleaner)
+#include <glm/ext/matrix_clip_space.hpp>
+#include <glm/ext/matrix_float4x4.hpp>
+#include <glm/ext/matrix_transform.hpp>
 
 #include "glsl_program.hpp"
 #include "state.hpp"
@@ -83,7 +81,6 @@ void Triangle::draw(const WorldState &world_state)
         const auto w = static_cast<float>(world_state.window.size.width);
         const auto h = static_cast<float>(world_state.window.size.height);
 
-        // NOLINTNEXTLINE(misc-include-cleaner)
         const glm::mat4 projection = glm::ortho(/*left=*/-w / 2.F,
                                                 /*right=*/w / 2.F,
                                                 /*bottom=*/-h / 2.F,
@@ -94,15 +91,12 @@ void Triangle::draw(const WorldState &world_state)
         const auto x0 = static_cast<float>(world_state.window.origin.x);
         const auto y0 = static_cast<float>(world_state.window.origin.y);
 
-        const glm::mat4 view =
-            // NOLINTNEXTLINE(misc-include-cleaner)
-            glm::lookAt(/*eye=*/glm::vec3(x0, y0, 1.F),
-                        /*center=*/glm::vec3(x0, y0, 0.F),
-                        /*up=*/glm::vec3(0.F, 1.F, 0.F));
+        const glm::mat4 view = glm::lookAt(/*eye=*/glm::vec3(x0, y0, 1.F),
+                                           /*center=*/glm::vec3(x0, y0, 0.F),
+                                           /*up=*/glm::vec3(0.F, 1.F, 0.F));
 
         const auto phi = static_cast<float>(world_state.t);
         const glm::mat4 model =
-            // NOLINTNEXTLINE(misc-include-cleaner)
             glm::rotate(glm::mat4{1.F}, phi, glm::vec3(0.F, 0.F, 1.F));
 
         const auto mvp = projection * view * model;
