@@ -116,8 +116,7 @@ Program::Program(const std::vector<Shader> &shaders,
             ::gl::glEnableVertexAttribArray(binding_idx);
 
             const auto [attrib_idx, buffer_offset, buffer_stride] = std::visit(
-                [](const auto &attr)
-                {
+                [](const auto &attr) {
                     return std::make_tuple(
                         attr.idx, attr.buffer_offset, attr.buffer_stride);
                 },
