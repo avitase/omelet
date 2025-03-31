@@ -30,7 +30,7 @@ class World final
     World &operator=(const World &) = delete;
     World &operator=(World &&) = delete;
 
-    ~World();
+    ~World() = default;
 
     const WorldState &tick(uint32_t fps);
 };

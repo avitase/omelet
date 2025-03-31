@@ -105,13 +105,6 @@ World::World(const Config &cfg)
     style.WindowRounding = 0.0F;
 }
 
-// NOLINTNEXTLINE(hicpp-use-equals-default,modernize-use-equals-default)
-World::~World()
-{
-    // Nothing to do here:)
-    // ...still needed due to forward type declarations
-}
-
 const WorldState &World::tick(const uint32_t fps)
 {
     if (fps > 0) {
