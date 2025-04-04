@@ -22,9 +22,7 @@ class Program final
         ::gl::GLuint idx;
         ::gl::GLint size;
         ::gl::GLenum type;
-        ::gl::GLintptr buffer_offset;
-        ::gl::GLintptr buffer_stride;
-        ::gl::GLuint relative_offset = 0;
+        ::gl::GLuint relative_offset;
     };
 
     struct FloatingPointAttribute
@@ -34,9 +32,7 @@ class Program final
         ::gl::GLint size;
         ::gl::GLenum type;
         bool normalized;
-        ::gl::GLintptr buffer_offset;
-        ::gl::GLintptr buffer_stride;
-        ::gl::GLuint relative_offset = 0;
+        ::gl::GLuint relative_offset;
     };
 
     using Attribute = std::variant<IntegerAttribute, FloatingPointAttribute>;
@@ -45,8 +41,10 @@ class Program final
     struct VBO
     {
         ::gl::GLuint id{};
-        ::gl::GLsizeiptr size = 0;
         std::vector<Attribute> attributes;
+        ::gl::GLintptr offset;
+        ::gl::GLsizei stride;
+        ::gl::GLsizeiptr size = 0;
     };
 
     ::gl::GLuint m_program;
@@ -69,11 +67,16 @@ class Program final
         std::string source;
     };
 
-    [[nodiscard]] static VBO create_vbo(
-        const std::vector<Attribute> &attributes)
+    struct VBOLayout
     {
-        return VBO{0, 0, attributes};
-    }
+        std::size_t stride;
+        std::size_t offset;
+    };
+    [[nodiscard]] static VBO create_vbo(const Attribute &attribute,
+                                        VBOLayout layout);
+
+    [[nodiscard]] static VBO create_vbo(
+        const std::vector<Attribute> &attributes, VBOLayout layout);
 
     Program(const std::vector<Shader> &shaders,
             const std::vector<VBO> &vbos,

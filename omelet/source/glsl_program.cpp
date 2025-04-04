@@ -91,6 +91,23 @@ namespace
 
 namespace omelet::glsl
 {
+
+Program::VBO Program::create_vbo(const std::vector<Attribute> &attributes,
+                                 const VBOLayout layout)
+{
+    return VBO{.id = 0,
+               .attributes = attributes,
+               .offset = static_cast<::gl::GLintptr>(layout.offset),
+               .stride = static_cast<::gl::GLsizei>(layout.stride),
+               .size = 0};
+}
+
+Program::VBO Program::create_vbo(const Attribute &attribute,
+                                 const VBOLayout layout)
+{
+    return create_vbo(std::vector{attribute}, layout);
+}
+
 Program::Program(const std::vector<Shader> &shaders,
                  const std::vector<VBO> &vbos,
                  const ::gl::GLenum drawing_mode)
@@ -110,26 +127,17 @@ Program::Program(const std::vector<Shader> &shaders,
         }
     }
 
-    ::gl::GLuint binding_idx = 0;
-    for (const auto &vbo : m_vbos) {
+    for (::gl::GLuint vbo_idx = 0; vbo_idx < m_vbos.size(); vbo_idx++) {
+        const auto &vbo = m_vbos[vbo_idx];
+        ::gl::glVertexArrayVertexBuffer(
+            m_vao, vbo_idx, vbo.id, vbo.offset, vbo.stride);
+
         for (const auto &attrib : vbo.attributes) {
-            ::gl::glEnableVertexAttribArray(binding_idx);
+            const auto attrib_idx =
+                std::visit([](const auto &attr) { return attr.idx; }, attrib);
 
-            const auto [attrib_idx, buffer_offset, buffer_stride] = std::visit(
-                [](const auto &attr) {
-                    return std::make_tuple(
-                        attr.idx, attr.buffer_offset, attr.buffer_stride);
-                },
-                attrib);
-
-            ::gl::glVertexArrayAttribBinding(m_vao, attrib_idx, binding_idx);
-
-            ::gl::glVertexArrayVertexBuffer(
-                m_vao,
-                binding_idx,
-                vbo.id,
-                buffer_offset,
-                static_cast<::gl::GLsizei>(buffer_stride));
+            ::gl::glEnableVertexArrayAttrib(m_vao, attrib_idx);
+            ::gl::glVertexArrayAttribBinding(m_vao, attrib_idx, vbo_idx);
 
             std::visit(
                 overloaded{
@@ -153,8 +161,6 @@ Program::Program(const std::vector<Shader> &shaders,
                     }},
                 attrib);
         }
-
-        binding_idx += 1;
     }
 }
 
