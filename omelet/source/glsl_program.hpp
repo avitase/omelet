@@ -101,8 +101,6 @@ class Program final
 
     void set_uniform(const std::string &name, float value);
 
-    [[nodiscard]] std::size_t num_vbos() const;
-
     template<typename T>
     void fill_vbo(const std::size_t vbo_idx, std::span<T> data)
     {
