@@ -40,7 +40,7 @@ find_package(glbinding REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(SDL3 REQUIRED CONFIG REQUIRED COMPONENTS SDL3-static)
-find_package(imgui 1.91.9 EXACT REQUIRED)
+find_package(imgui 1.92.1 EXACT REQUIRED)
 
 target_link_libraries(
         omelet_lib

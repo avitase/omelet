@@ -4,7 +4,7 @@ include(cmake/prelude.cmake)
 
 project(
     imgui
-    VERSION 1.91.9
+    VERSION 1.92.1
     LANGUAGES CXX
 )
 
