@@ -39,8 +39,10 @@ ExternalProject_Add(
         -DCMAKE_BUILD_TYPE=Release
         -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
         -DCMAKE_PREFIX_PATH:PATH=<INSTALL_DIR>
-        -DSDL_SHARED=OFF
         -DSDL_STATIC=ON
+        -DSDL_SHARED=OFF
+        -DSDL_TEST_LIBRARY=OFF
+        -DSDL_DISABLE_INSTALL_DOCS=OFF
 )
 
 ExternalProject_Add(
