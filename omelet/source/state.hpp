@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cstdint>
-
 #include "utilities.hpp"
 
 namespace omelet
@@ -13,18 +11,11 @@ struct WindowState
     bool dragging = false;
 };
 
-enum class MouseButton : int8_t
-{
-    none = 0,
-    left = 1,
-    right = 2,
-    middle = 3,
-};
-
 struct MouseState
 {
     Point2D<float> position{.x = 0.F, .y = 0.F};
-    MouseButton button_pressed = MouseButton::none;
+    bool left_button_pressed = false;
+    bool right_button_pressed = false;
     bool double_click = false;
     bool inside_window = false;
     bool inside_any_overlay = false;

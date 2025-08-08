@@ -1,5 +1,3 @@
-#include <cstdint>
-
 #include "world.hpp"
 
 #include <SDL3/SDL_events.h>
@@ -77,22 +75,18 @@ World::World(const Config &cfg)
     style.WindowRounding = 0.F;
 }
 
-const WorldState &World::tick(const uint32_t fps)
+void World::handle_event(const SDL_Event &event)
 {
-    if (fps > 0) {
-        m_world_state.t += 1. / static_cast<double>(fps);
-    }
+    ImGui_ImplSDL3_ProcessEvent(&event);
+    m_world_state.mouse.inside_any_overlay =
+        ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow);
 
-    m_world_state.mouse.button_pressed = MouseButton::none;
+    ::omelet::handle_event(event, m_world_state);
+}
 
-    SDL_Event event;
-    while (SDL_PollEvent(&event)) {
-        ImGui_ImplSDL3_ProcessEvent(&event);
-        m_world_state.mouse.inside_any_overlay =
-            ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow);
-
-        handle_event(event, m_world_state);
-    }
+const WorldState &World::tick(const double ticks)
+{
+    m_world_state.t = ticks;
 
     {
         auto &mouse = m_world_state.mouse;

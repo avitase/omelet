@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cstdint>
+#include <SDL3/SDL_events.h>
 
 #include "overlays.hpp"
 #include "state.hpp"
@@ -32,6 +32,7 @@ class World final
 
     ~World() = default;
 
-    const WorldState &tick(uint32_t fps);
+    void handle_event(const SDL_Event &event);
+    const WorldState &tick(double ticks);
 };
 }  // namespace omelet

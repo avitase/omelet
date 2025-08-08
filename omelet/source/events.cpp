@@ -35,12 +35,13 @@ void on_mouse_button_down(const SDL_MouseButtonEvent &event,
 
     switch (event.button) {
         case SDL_BUTTON_LEFT: {
-            window.dragging = not mouse.inside_any_overlay;
-            mouse.button_pressed = MouseButton::left;
+            mouse.left_button_pressed = true;
             mouse.double_click = event.clicks > 1;
+
+            window.dragging = not mouse.inside_any_overlay;
         } break;
         case SDL_BUTTON_RIGHT: {
-            mouse.button_pressed = MouseButton::right;
+            mouse.right_button_pressed = true;
             mouse.double_click = event.clicks > 1;
         } break;
         default:;
@@ -50,9 +51,16 @@ void on_mouse_button_down(const SDL_MouseButtonEvent &event,
 void on_mouse_button_up(const SDL_MouseButtonEvent &event,
                         WorldState &world_state)
 {
+    auto &window = world_state.window;
+    auto &mouse = world_state.mouse;
+
     switch (event.button) {
         case SDL_BUTTON_LEFT: {
-            world_state.window.dragging = false;
+            mouse.left_button_pressed = false;
+            window.dragging = false;
+        } break;
+        case SDL_BUTTON_RIGHT: {
+            mouse.right_button_pressed = false;
         } break;
         default:;
     }
