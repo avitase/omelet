@@ -42,7 +42,6 @@ ExternalProject_Add(
         -DSDL_STATIC=ON
         -DSDL_SHARED=OFF
         -DSDL_TEST_LIBRARY=OFF
-        -DSDL_DISABLE_INSTALL_DOCS=OFF
 )
 
 ExternalProject_Add(
