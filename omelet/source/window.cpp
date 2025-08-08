@@ -46,7 +46,7 @@ Window::Window(const std::string &title,
 
     if (multisampling) {
         SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-        SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 16);
+        SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8);
     }
 
     m_window = SDL_CreateWindow(
