@@ -6,6 +6,7 @@
 #include "utilities.hpp"
 
 struct SDL_Window;
+struct SDL_GLContextState;
 
 namespace omelet
 {
@@ -14,7 +15,7 @@ namespace omelet
 class Window final
 {
     SDL_Window *m_window{nullptr};
-    void *m_context{nullptr};
+    SDL_GLContextState *m_context{nullptr};
 
   public:
     Window(const std::string &title,

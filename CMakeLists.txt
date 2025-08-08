@@ -32,7 +32,20 @@ ExternalProject_Add(
 )
 
 ExternalProject_Add(
+    sdl
+    SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/3rd-party/SDL
+    INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/install
+    CMAKE_ARGS
+        -DCMAKE_BUILD_TYPE=Release
+        -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+        -DCMAKE_PREFIX_PATH:PATH=<INSTALL_DIR>
+        -DSDL_SHARED=OFF
+        -DSDL_STATIC=ON
+)
+
+ExternalProject_Add(
     imgui
+    DEPENDS sdl
     SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/3rd-party/imgui
     INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/install
     CMAKE_ARGS
@@ -43,7 +56,7 @@ ExternalProject_Add(
 
 ExternalProject_Add(
     omelet
-    DEPENDS glbinding glm imgui
+    DEPENDS glbinding glm imgui sdl
     SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/omelet
     INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/install
     CMAKE_ARGS

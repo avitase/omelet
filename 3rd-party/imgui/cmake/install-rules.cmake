@@ -19,7 +19,7 @@ install(
     imgui/imgui_internal.h
     imgui/backends/imgui_impl_opengl3.h
     imgui/backends/imgui_impl_opengl3_loader.h
-    imgui/backends/imgui_impl_sdl2.h
+    imgui/backends/imgui_impl_sdl3.h
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
     COMPONENT imgui_Development
 )

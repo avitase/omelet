@@ -8,8 +8,8 @@ namespace omelet
 {
 struct WindowState
 {
-    Point2D<double> origin{.x = 0.0, .y = 0.0};
-    Size2D<int> size{.width = 0, .height = 0};
+    Point2D<float> origin{.x = 0.F, .y = 0.F};
+    Size2D<float> size{.width = 0.F, .height = 0.F};
     bool dragging = false;
 };
 
@@ -23,7 +23,7 @@ enum class MouseButton : int8_t
 
 struct MouseState
 {
-    Point2D<double> position{.x = 0.0, .y = 0.0};
+    Point2D<float> position{.x = 0.F, .y = 0.F};
     MouseButton button_pressed = MouseButton::none;
     bool double_click = false;
     bool inside_window = false;
@@ -34,7 +34,7 @@ struct WorldState
 {
     WindowState window{};
     MouseState mouse{};
-    double t = 0.0;
+    double t = 0.;
     bool running = true;
 };
 }  // namespace omelet

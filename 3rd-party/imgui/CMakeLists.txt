@@ -18,7 +18,7 @@ add_library(
     imgui/imgui_tables.cpp
     imgui/imgui_widgets.cpp
     imgui/backends/imgui_impl_opengl3.cpp
-    imgui/backends/imgui_impl_sdl2.cpp
+    imgui/backends/imgui_impl_sdl3.cpp
 )
 add_library(imgui::imgui ALIAS imgui_imgui)
 
@@ -41,11 +41,11 @@ target_include_directories(
 
 target_compile_features(imgui_imgui PUBLIC cxx_std_17)
 
-find_package(SDL2 REQUIRED)
+find_package(SDL3 REQUIRED CONFIG REQUIRED COMPONENTS SDL3-static)
 target_link_libraries(
         imgui_imgui
         PUBLIC
-        SDL2::SDL2
+        SDL3::SDL3-static
 )
 
 if(NOT CMAKE_SKIP_INSTALL_RULES)

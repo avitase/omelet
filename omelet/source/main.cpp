@@ -18,7 +18,7 @@ int main(int /*argc*/, char ** /*argv*/)
 
         const auto t1 = std::chrono::high_resolution_clock::now();
         const std::chrono::duration<double> dt{t1 - t0};
-        fps = static_cast<uint32_t>(std::round(1.0 / dt.count()));
+        fps = static_cast<uint32_t>(std::round(1. / dt.count()));
     }
 
     return EXIT_SUCCESS;

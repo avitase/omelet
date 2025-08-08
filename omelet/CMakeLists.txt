@@ -39,7 +39,7 @@ target_compile_features(omelet_lib PUBLIC cxx_std_23)
 find_package(glbinding REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(OpenGL REQUIRED)
-find_package(SDL2 REQUIRED)
+find_package(SDL3 REQUIRED CONFIG REQUIRED COMPONENTS SDL3-static)
 find_package(imgui 1.91.9 EXACT REQUIRED)
 
 target_link_libraries(
@@ -49,7 +49,7 @@ target_link_libraries(
         glbinding::glbinding-aux
         glm::glm
         OpenGL::GL
-        SDL2::SDL2
+        SDL3::SDL3-static
         imgui::imgui
 )
 

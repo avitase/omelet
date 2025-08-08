@@ -73,8 +73,10 @@ Triangle::Triangle()
 
 void Triangle::draw(const WorldState &world_state, const glm::mat4 &vp)
 {
-    ::gl::glViewport(
-        0, 0, world_state.window.size.width, world_state.window.size.height);
+    ::gl::glViewport(0,
+                     0,
+                     static_cast<int>(world_state.window.size.width),
+                     static_cast<int>(world_state.window.size.height));
 
     {
         const auto phi = static_cast<float>(world_state.t);
@@ -82,7 +84,6 @@ void Triangle::draw(const WorldState &world_state, const glm::mat4 &vp)
             glm::rotate(glm::mat4{1.F}, phi, glm::vec3(0.F, 0.F, 1.F));
 
         const auto mvp = vp * model;
-
         m_shader_program.set_uniform("mvp",
                                      ::gl::glProgramUniformMatrix4fv,
                                      1,

@@ -1,6 +1,6 @@
 # Omlete 🍳
 
-This is a highly opinionated [CMake][5] template using *contemporary* C++ to wrap "modern" OpenGL, [SDL2][1], [Dear ImGui][2], [glbindings][3], and [GLM][4].
+This is a highly opinionated [CMake][5] template using *contemporary* C++ to wrap "modern" OpenGL, [SDL3][1], [Dear ImGui][2], [glbindings][3], and [GLM][4].
 
 ## Template or Library?
 
@@ -22,7 +22,7 @@ mkdir -p omelet/build && cd omelet/build/
 cmake .. && make -j
 ```
 
-If you have installed [SDL2][1] and OpenGL on your system, this will build [Dear ImGui][2], [glbindings][3], and [GLM][4] and finally compile the [template in omelet/](omelet/). (If not, it will fail spectacularly💥)
+If you have installed OpenGL on your system, this will build [SDL3][1], [Dear ImGui][2], [glbindings][3], and [GLM][4] and finally compile the [template in omelet/](omelet/). (If not, it will fail spectacularly💥)
 
 Compiling the dependencies does take some time but will eventually create an executable under `build/install/bin`.
 Run it, it's safe!✋
@@ -35,7 +35,7 @@ You should see a spinning triangle and a [Dear ImGui window][2] with the positio
 
 ## How to use it properly?
 
-This template will give you a CMake Superbuild that builds [Dear ImGui][2], [glbindings][3], and [GLM][4] as dependencies and the actual SDL2/OpenGL template.
+This template will give you a CMake Superbuild that builds [SDL3][1], [Dear ImGui][2], [glbindings][3], and [GLM][4] as dependencies and the actual SDL3/OpenGL template.
 Typically, building the Superbuild only has to be done once, you can then navigate to [`omelete/`](omelet/) (the subdirectory) and start fouling around here.
 
 The subproject [`omelet/`](omelet/) expects to find its dependencies under `build/install`.

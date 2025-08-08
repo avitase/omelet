@@ -1,8 +1,7 @@
 #include "events.hpp"
 
-#include <SDL2/SDL_events.h>
-#include <SDL2/SDL_mouse.h>
-#include <SDL2/SDL_video.h>
+#include <SDL3/SDL_events.h>
+#include <SDL3/SDL_mouse.h>
 
 #include "state.hpp"
 
@@ -13,15 +12,15 @@ void on_window_event(const SDL_WindowEvent &event, WorldState &world_state)
     auto &window = world_state.window;
     auto &mouse = world_state.mouse;
 
-    switch (event.event) {
-        case SDL_WINDOWEVENT_RESIZED: {
-            window.size.width = event.data1;
-            window.size.height = event.data2;
+    switch (event.type) {
+        case SDL_EVENT_WINDOW_RESIZED: {
+            window.size.width = static_cast<float>(event.data1);
+            window.size.height = static_cast<float>(event.data2);
         } break;
-        case SDL_WINDOWEVENT_ENTER: {
+        case SDL_EVENT_WINDOW_MOUSE_ENTER: {
             mouse.inside_window = true;
         } break;
-        case SDL_WINDOWEVENT_LEAVE: {
+        case SDL_EVENT_WINDOW_MOUSE_LEAVE: {
             mouse.inside_window = false;
         } break;
         default:;

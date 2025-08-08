@@ -1,7 +1,6 @@
 #pragma once
 
-#include <SDL2/SDL_events.h>
-#include <SDL2/SDL_mouse.h>
+#include <SDL3/SDL_events.h>
 
 #include "state.hpp"
 
