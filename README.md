@@ -1,6 +1,6 @@
 # Omlete 🍳
 
-This is a highly opinionated [CMake][5] template using *contemporary* C++ to wrap "modern" OpenGL, [SDL3][1], [Dear ImGui][2], [glbindings][3], and [GLM][4].
+This is a highly opinionated [CMake][5] template using *contemporary* C++ to wrap "modern" OpenGL 3.0 ES, [SDL3][1], [Dear ImGui][2], [glbindings][3], and [GLM][4].
 
 ## Template or Library?
 
@@ -9,7 +9,7 @@ Consider this repository as a template that helps you creating a canonical *Hell
 ![A colorful rotation triangle](https://github.com/avitase/omelet/blob/main/screenshot.png?raw=true)
 
 In contrast to a library or a full-fledged game engine, this template does note even try to hide OpenGL details from you but instead provides you with a *good* (this is the part that is highly opinionated) starting point with convenient helper functions that wraps, for instance, the annoying VAO/VBO fiddling.
-However, none of the files under [`omlete/`](omlete/) should be considered out of bounds: Open them, read them, change them! (Maybe except for [`omelet/source/glsl_program.cpp`](omelet/source/glsl_program.cpp); that one is a beast.)
+However, none of the files under [`omlete/`](omlete/) should be considered out of bounds: Open them, read them, change them! (Maybe except for [`omelet/source/glsl_program.cpp`](omelet/source/glsl_program.cpp); here be dragons🐉)
 
 ## How to use it?
 

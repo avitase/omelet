@@ -1,3 +1,4 @@
+#include <cassert>
 #include <cstdint>
 #include <stdexcept>
 #include <string>
@@ -38,15 +39,14 @@ Window::Window(const std::string &title,
         throw std::runtime_error(get_sdl_error("SDL could not initialize."));
     }
 
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
-                        SDL_GL_CONTEXT_PROFILE_CORE);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
     if (multisampling) {
         SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-        SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8);
+        SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 1);
     }
 
     m_window = SDL_CreateWindow(
@@ -73,17 +73,24 @@ Window::Window(const std::string &title,
             SDL_GL_GetProcAddress),
         /*resolve_functions=*/true);
 
-    glbinding::aux::enableGetErrorCallback();
+    ::glbinding::aux::enableGetErrorCallback();
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
 
     ImGui::StyleColorsLight();
     ImGui_ImplSDL3_InitForOpenGL(m_window, m_context);
-    ImGui_ImplOpenGL3_Init("#version 460");
+    ImGui_ImplOpenGL3_Init("#version 300 es");
 
-    if (multisampling) {
-        ::gl::glEnable(::gl::GL_MULTISAMPLE);
+    {
+        int profile;
+        SDL_GL_GetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, &profile);
+        assert(profile == SDL_GL_CONTEXT_PROFILE_CORE
+               or profile == SDL_GL_CONTEXT_PROFILE_ES);
+
+        if (multisampling and profile == SDL_GL_CONTEXT_PROFILE_CORE) {
+            ::gl::glEnable(::gl::GL_MULTISAMPLE);
+        }
     }
 }
 

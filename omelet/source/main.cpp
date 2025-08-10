@@ -17,7 +17,7 @@ extern "C" SDL_AppResult SDL_AppInit(void **appstate,
     try {
         *appstate = new omelet::World{{.width = 800, .height = 600}};
     } catch (const std::exception &e) {
-        std::cerr << e.what() << '\n';
+        std::cerr << "Error during initialization: " << e.what() << '\n';
         return SDL_APP_FAILURE;
     }
 

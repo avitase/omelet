@@ -15,7 +15,8 @@
 namespace
 {
 const char *vertex_shader = R"(
-#version 460 core
+#version 300 es
+precision mediump float;
 
 layout(location = 0) in vec2 in_xy;
 layout(location = 1) in vec3 in_rgb;
@@ -32,7 +33,8 @@ void main()
 )";
 
 const char *fragment_shader = R"(
-#version 460 core
+#version 300 es
+precision mediump float;
 
 in vec4 v_color;
 out vec4 f_color;

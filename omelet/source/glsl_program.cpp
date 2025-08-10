@@ -41,7 +41,7 @@ namespace
             err_msg.resize(static_cast<std::size_t>(written));
         }
 
-        throw std::runtime_error("Failed to compile vertex shader:" + err_msg);
+        throw std::runtime_error("Failed to compile vertex shader: " + err_msg);
     }
 
     return handle;
@@ -78,7 +78,7 @@ namespace
             err_msg.resize(static_cast<std::size_t>(written));
         }
 
-        throw std::runtime_error("Failed to link shader program:" + err_msg);
+        throw std::runtime_error("Failed to link shader program: " + err_msg);
     }
 
     for (const ::gl::GLuint shader_handle : shader_handles) {
@@ -86,6 +86,13 @@ namespace
     }
 
     return program_handle;
+}
+
+constexpr const void *make_buffer_offset(const auto offset,
+                                         const auto relative_offset) noexcept
+{
+    // NOLINTNEXTLINE(performance-no-int-to-ptr)
+    return reinterpret_cast<const void *>(offset + relative_offset);
 }
 }  // namespace
 
@@ -121,47 +128,47 @@ Program::Program(const std::vector<Shader> &shaders,
     {
         const auto n = m_vbos.size();
         std::vector<::gl::GLuint> buffers(n);
-        ::gl::glCreateBuffers(static_cast<::gl::GLsizei>(n), buffers.data());
+
+        ::gl::glGenBuffers(static_cast<::gl::GLsizei>(n), buffers.data());
         for (auto i = 0U; i < n; i++) {
             m_vbos[i].id = buffers[i];
         }
     }
 
-    for (::gl::GLuint vbo_idx = 0; vbo_idx < m_vbos.size(); vbo_idx++) {
-        const auto &vbo = m_vbos[vbo_idx];
-        ::gl::glVertexArrayVertexBuffer(
-            m_vao, vbo_idx, vbo.id, vbo.offset, vbo.stride);
+    for (const auto &vbo : m_vbos) {
+        ::gl::glBindBuffer(::gl::GL_ARRAY_BUFFER, vbo.id);
 
         for (const auto &attrib : vbo.attributes) {
             const auto attrib_idx =
                 std::visit([](const auto &attr) { return attr.idx; }, attrib);
 
-            ::gl::glEnableVertexArrayAttrib(m_vao, attrib_idx);
-            ::gl::glVertexArrayAttribBinding(m_vao, attrib_idx, vbo_idx);
-
+            ::gl::glEnableVertexAttribArray(attrib_idx);
             std::visit(
-                overloaded{
-                    [vao = m_vao](const IntegerAttribute &attr)
-                    {
-                        ::gl::glVertexArrayAttribIFormat(vao,
-                                                         attr.idx,
-                                                         attr.size,
-                                                         attr.type,
-                                                         attr.relative_offset);
-                    },
-                    [vao = m_vao](const FloatingPointAttribute &attr)
-                    {
-                        ::gl::glVertexArrayAttribFormat(
-                            vao,
-                            attr.idx,
-                            attr.size,
-                            attr.type,
-                            attr.normalized ? ::gl::GL_TRUE : ::gl::GL_FALSE,
-                            attr.relative_offset);
-                    }},
+                overloaded{[vbo](const IntegerAttribute &attr)
+                           {
+                               ::gl::glVertexAttribIPointer(
+                                   attr.idx,
+                                   attr.size,
+                                   attr.type,
+                                   vbo.stride,
+                                   ::make_buffer_offset(vbo.offset,
+                                                        attr.relative_offset));
+                           },
+                           [vbo](const FloatingPointAttribute &attr)
+                           {
+                               ::gl::glVertexAttribPointer(
+                                   attr.idx,
+                                   attr.size,
+                                   attr.type,
+                                   attr.normalized ? ::gl::GL_TRUE
+                                                   : ::gl::GL_FALSE,
+                                   vbo.stride,
+                                   ::make_buffer_offset(vbo.offset,
+                                                        attr.relative_offset));
+                           }},
                 attrib);
         }
-    }
+    }  // namespace omelet::glsl
 }
 
 Program::Program(Program &&other) noexcept
@@ -215,7 +222,7 @@ Program::~Program()
 
     const auto idx = ::gl::glGetUniformLocation(m_program, name.c_str());
     if (idx < 0) {
-        throw std::runtime_error("Could not find uniform " + name);
+        throw std::runtime_error("Could not find uniform '" + name + "'");
     }
 
     const auto success = m_uniform_location.emplace(name, idx).second;
@@ -236,12 +243,13 @@ void Program::fill_vbo(const std::size_t vbo_idx,
     assert(vbo_idx < m_vbos.size());
     auto &vbo = m_vbos[vbo_idx];
 
+    ::gl::glBindBuffer(::gl::GL_ARRAY_BUFFER, vbo.id);
     if (vbo.size < n_bytes) {
         vbo.size = n_bytes;
-        ::gl::glNamedBufferData(
-            vbo.id, n_bytes, nullptr, ::gl::GL_DYNAMIC_DRAW);
+        ::gl::glBufferData(
+            ::gl::GL_ARRAY_BUFFER, n_bytes, nullptr, ::gl::GL_DYNAMIC_DRAW);
     }
-    ::gl::glNamedBufferSubData(vbo.id, 0, n_bytes, data);
+    ::gl::glBufferSubData(::gl::GL_ARRAY_BUFFER, 0, n_bytes, data);
 }
 
 void Program::draw(const std::size_t n_elements) const
