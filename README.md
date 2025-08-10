@@ -69,7 +69,7 @@ Everything you find under [`omelet/`](omelet) is nothing but a template, and you
 However, consider starting your journey in [`omelet/source/triangle.cpp`](omelet/source/triangle.cpp) and [`omelet/source/world.cpp`](omelet/source/world.cpp), and then gradually work yourself through the includes, when needed.
 
 When you feel lost, have a look into [`omelet/source/main.cpp`](omelet/source/main.cpp) where we define
-`int main(int, char**)` and start the life of *the window*.
+the entry point to the program via [SDL's main callbacks][7] and start the life of *the window*.
 
 ## Seeing link-time errors?
 
@@ -97,3 +97,5 @@ ExternalProject_Add(
 [5]: https://cmake.org/
 
 [6]: https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html
+
+[7]: https://wiki.libsdl.org/SDL3/SDL_MAIN_USE_CALLBACKS
