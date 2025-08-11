@@ -171,6 +171,13 @@ Program::Program(const std::vector<Shader> &shaders,
     }  // namespace omelet::glsl
 }
 
+Program::Program(const std::vector<Shader> &shaders,
+                 VBO &&vbo,
+                 const ::gl::GLenum drawing_mode)
+    : Program(shaders, std::vector{std::move(vbo)}, drawing_mode)
+{
+}
+
 Program::Program(Program &&other) noexcept
     : m_program(other.m_program)
     , m_vao(other.m_vao)

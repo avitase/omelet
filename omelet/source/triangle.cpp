@@ -53,20 +53,18 @@ Triangle::Triangle()
     : m_shader_program(
           {{.type = ::gl::GL_VERTEX_SHADER, .source = vertex_shader},
            {.type = ::gl::GL_FRAGMENT_SHADER, .source = fragment_shader}},
-          {glsl::Program::create_vbo(
-               glsl::Program::FloatingPointAttribute{.idx = 0,
+          glsl::Program::create_vbo(
+              {glsl::Program::FloatingPointAttribute{.idx = 0,
                                                      .size = 2,
                                                      .type = ::gl::GL_FLOAT,
                                                      .normalized = false,
                                                      .relative_offset = 0},
-               glsl::Program::VBOLayout{.stride = 8, .offset = 0}),
-           glsl::Program::create_vbo(
                glsl::Program::FloatingPointAttribute{.idx = 1,
                                                      .size = 3,
                                                      .type = ::gl::GL_FLOAT,
                                                      .normalized = false,
-                                                     .relative_offset = 0},
-               glsl::Program::VBOLayout{.stride = 12, .offset = 0})},
+                                                     .relative_offset = 8}},
+              glsl::Program::VBOLayout{.stride = 20, .offset = 0}),
           ::gl::GL_TRIANGLES)
 {
 }
@@ -91,13 +89,22 @@ void Triangle::draw(const WorldState &world_state, const glm::mat4 &vp)
                                      &mvp[0][0]);
     }
 
+    constexpr auto n_elements = 3UZ;
     constexpr std::array vertices{-100.F, -100.F, 0.F, 100.F, 100.F, -100.F};
-    m_shader_program.fill_vbo(0, std::span{vertices.data(), vertices.size()});
-
     constexpr std::array color{1.F, 0.F, 0.F, 0.F, 1.F, 0.F, 0.F, 0.F, 1.F};
-    m_shader_program.fill_vbo(1, std::span{color.data(), color.size()});
 
-    m_shader_program.draw(3);
+    std::array<float, vertices.size() + color.size()> data_zipped{0.F};
+    for (auto i = 0UZ; i < n_elements; i++) {
+        data_zipped[5UZ * i] = vertices[2UZ * i];
+        data_zipped[(5UZ * i) + 1UZ] = vertices[(2UZ * i) + 1UZ];
+        data_zipped[(5UZ * i) + 2UZ] = color[3UZ * i];
+        data_zipped[(5UZ * i) + 3UZ] = color[(3UZ * i) + 1UZ];
+        data_zipped[(5UZ * i) + 4UZ] = color[(3UZ * i) + 2UZ];
+    }
+
+    m_shader_program.fill_vbo(
+        0, std::span{data_zipped.data(), data_zipped.size()});
+    m_shader_program.draw(n_elements);
 }
 
 }  // namespace omelet

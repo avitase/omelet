@@ -80,6 +80,10 @@ class Program final
             const std::vector<VBO> &vbos,
             ::gl::GLenum drawing_mode);
 
+    Program(const std::vector<Shader> &shaders,
+            VBO &&vbo,
+            ::gl::GLenum drawing_mode);
+
     Program(const Program &) = delete;
 
     Program(Program &&other) noexcept;
