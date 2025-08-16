@@ -8,8 +8,7 @@
 #include <variant>
 #include <vector>
 
-#include <glbinding/gl/enum.h>
-#include <glbinding/gl/types.h>
+#include <glad/gles2.h>
 
 namespace omelet::glsl
 {
@@ -18,19 +17,19 @@ class Program final
   public:
     struct IntegerAttribute
     {
-        ::gl::GLuint idx;
-        ::gl::GLint size;
-        ::gl::GLenum type;
-        ::gl::GLuint relative_offset;
+        GLuint idx;
+        GLint size;
+        GLenum type;
+        GLuint relative_offset;
     };
 
     struct FloatingPointAttribute
     {
-        ::gl::GLuint idx;
-        ::gl::GLint size;
-        ::gl::GLenum type;
+        GLuint idx;
+        GLint size;
+        GLenum type;
         bool normalized;
-        ::gl::GLuint relative_offset;
+        GLuint relative_offset;
     };
 
     using Attribute = std::variant<IntegerAttribute, FloatingPointAttribute>;
@@ -38,30 +37,28 @@ class Program final
   private:
     struct VBO
     {
-        ::gl::GLuint id{};
+        GLuint id{};
         std::vector<Attribute> attributes;
-        ::gl::GLintptr offset;
-        ::gl::GLsizei stride;
-        ::gl::GLsizeiptr size = 0;
+        GLintptr offset;
+        GLsizei stride;
+        GLsizeiptr size = 0;
     };
 
-    ::gl::GLuint m_program;
-    ::gl::GLuint m_vao{};
+    GLuint m_program;
+    GLuint m_vao{};
     std::vector<VBO> m_vbos;
-    ::gl::GLenum m_drawing_mode;
-    std::unordered_map<std::string, ::gl::GLint> m_uniform_location;
+    GLenum m_drawing_mode;
+    std::unordered_map<std::string, GLint> m_uniform_location;
     bool m_moved = false;
 
-    ::gl::GLint get_uniform_location(const std::string &name);
+    GLint get_uniform_location(const std::string &name);
 
-    void fill_vbo(std::size_t vbo_idx,
-                  const void *data,
-                  ::gl::GLsizeiptr n_bytes);
+    void fill_vbo(std::size_t vbo_idx, const void *data, GLsizeiptr n_bytes);
 
   public:
     struct Shader
     {
-        ::gl::GLenum type{};
+        GLenum type{};
         std::string source;
     };
 
@@ -78,11 +75,9 @@ class Program final
 
     Program(const std::vector<Shader> &shaders,
             const std::vector<VBO> &vbos,
-            ::gl::GLenum drawing_mode);
+            GLenum drawing_mode);
 
-    Program(const std::vector<Shader> &shaders,
-            VBO &&vbo,
-            ::gl::GLenum drawing_mode);
+    Program(const std::vector<Shader> &shaders, VBO &&vbo, GLenum drawing_mode);
 
     Program(const Program &) = delete;
 
@@ -96,9 +91,8 @@ class Program final
 
     void set_uniform(const std::string &name, auto &&f, auto &&...args)
     {
-        f(m_program,
-          get_uniform_location(name),
-          std::forward<decltype(args)>(args)...);
+        glUseProgram(m_program);
+        f(get_uniform_location(name), std::forward<decltype(args)>(args)...);
     }
 
     void set_uniform(const std::string &name, float value);
@@ -109,7 +103,7 @@ class Program final
         if (not data.empty()) {
             fill_vbo(vbo_idx,
                      data.data(),
-                     static_cast<::gl::GLsizeiptr>(data.size() * sizeof(T)));
+                     static_cast<GLsizeiptr>(data.size() * sizeof(T)));
         }
     }
 

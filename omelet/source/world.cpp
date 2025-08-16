@@ -3,8 +3,7 @@
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_mouse.h>
 #include <SDL3/SDL_video.h>
-#include <glbinding/gl/bitfield.h>
-#include <glbinding/gl/functions.h>
+#include <glad/gles2.h>
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <imgui.h>
@@ -97,9 +96,9 @@ const WorldState &World::tick(const double ticks)
 
     if (m_world_state.running) {
         {
-            ::gl::glClearColor(1.F, 1.F, 1.F, 1.F);
-            ::gl::glClear(::gl::GL_COLOR_BUFFER_BIT);
-            ::gl::glClear(::gl::GL_DEPTH_BUFFER_BIT);
+            glClearColor(1.F, 1.F, 1.F, 1.F);
+            glClear(GL_COLOR_BUFFER_BIT);
+            glClear(GL_DEPTH_BUFFER_BIT);
         }
 
         {

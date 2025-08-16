@@ -3,9 +3,7 @@
 
 #include "triangle.hpp"
 
-#include <glbinding/gl/boolean.h>
-#include <glbinding/gl/enum.h>
-#include <glbinding/gl/functions.h>
+#include <glad/gles2.h>
 #include <glm/ext/matrix_float4x4.hpp>
 #include <glm/ext/matrix_transform.hpp>
 
@@ -50,30 +48,30 @@ namespace omelet
 
 Triangle::Triangle()
     : m_shader_program(
-          {{.type = ::gl::GL_VERTEX_SHADER, .source = vertex_shader},
-           {.type = ::gl::GL_FRAGMENT_SHADER, .source = fragment_shader}},
+          {{.type = GL_VERTEX_SHADER, .source = vertex_shader},
+           {.type = GL_FRAGMENT_SHADER, .source = fragment_shader}},
           glsl::Program::create_vbo(
               {glsl::Program::FloatingPointAttribute{.idx = 0,
                                                      .size = 2,
-                                                     .type = ::gl::GL_FLOAT,
+                                                     .type = GL_FLOAT,
                                                      .normalized = false,
                                                      .relative_offset = 0},
                glsl::Program::FloatingPointAttribute{.idx = 1,
                                                      .size = 3,
-                                                     .type = ::gl::GL_FLOAT,
+                                                     .type = GL_FLOAT,
                                                      .normalized = false,
                                                      .relative_offset = 8}},
               glsl::Program::VBOLayout{.stride = 20, .offset = 0}),
-          ::gl::GL_TRIANGLES)
+          GL_TRIANGLES)
 {
 }
 
 void Triangle::draw(const WorldState &world_state, const glm::mat4 &vp)
 {
-    ::gl::glViewport(0,
-                     0,
-                     static_cast<int>(world_state.window.size.width),
-                     static_cast<int>(world_state.window.size.height));
+    glViewport(0,
+               0,
+               static_cast<int>(world_state.window.size.width),
+               static_cast<int>(world_state.window.size.height));
 
     {
         const auto phi = static_cast<float>(world_state.t);
@@ -82,9 +80,9 @@ void Triangle::draw(const WorldState &world_state, const glm::mat4 &vp)
 
         const auto mvp = vp * model;
         m_shader_program.set_uniform("mvp",
-                                     ::gl::glProgramUniformMatrix4fv,
+                                     glUniformMatrix4fv,
                                      1,
-                                     ::gl::GL_FALSE,
+                                     static_cast<GLboolean>(GL_FALSE),
                                      &mvp[0][0]);
     }
 

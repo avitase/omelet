@@ -1,4 +1,3 @@
-#include <cassert>
 #include <cstdint>
 #include <stdexcept>
 #include <string>
@@ -8,17 +7,10 @@
 #include <SDL3/SDL_error.h>
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_video.h>
-#include <glbinding/ProcAddress.h>
-#include <glbinding/gl/enum.h>
-#include <glbinding/gl/functions.h>
-#include <glbinding/glbinding.h>
+#include <glad/gles2.h>
 #include <imgui.h>
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_sdl3.h>
-
-#ifndef NDEBUG
-#    include <glbinding-aux/debug.h>
-#endif
 
 #include "utilities.hpp"
 
@@ -71,13 +63,11 @@ Window::Window(const std::string &title,
         throw std::runtime_error(msg);
     }
 
-    ::glbinding::initialize(
-        reinterpret_cast<::glbinding::ProcAddress (*)(const char *)>(
-            SDL_GL_GetProcAddress),
-        /*resolve_functions=*/true);
-
-#ifndef NDEBUG
-    ::glbinding::aux::enableGetErrorCallback();
+#ifndef __EMSCRIPTEN__
+    if (gladLoadGLES2(SDL_GL_GetProcAddress) == 0) {
+        SDL_Quit();
+        throw std::runtime_error("Failed to load GLES2");
+    }
 #endif
 
     IMGUI_CHECKVERSION();
@@ -86,17 +76,6 @@ Window::Window(const std::string &title,
     ImGui::StyleColorsLight();
     ImGui_ImplSDL3_InitForOpenGL(m_window, m_context);
     ImGui_ImplOpenGL3_Init("#version 300 es");
-
-    {
-        int profile;
-        SDL_GL_GetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, &profile);
-        assert(profile == SDL_GL_CONTEXT_PROFILE_CORE
-               or profile == SDL_GL_CONTEXT_PROFILE_ES);
-
-        if (multisampling and profile == SDL_GL_CONTEXT_PROFILE_CORE) {
-            ::gl::glEnable(::gl::GL_MULTISAMPLE);
-        }
-    }
 }
 
 Window::~Window()

@@ -36,7 +36,7 @@ target_compile_features(omelet_lib PUBLIC cxx_std_23)
 
 # ---- Dependencies ----
 
-find_package(glbinding REQUIRED)
+find_package(glad 1.0.0 EXACT REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(SDL3 REQUIRED CONFIG REQUIRED COMPONENTS SDL3-static)
@@ -45,8 +45,7 @@ find_package(imgui 1.92.2 EXACT REQUIRED)
 target_link_libraries(
         omelet_lib
         PUBLIC
-        glbinding::glbinding
-        glbinding::glbinding-aux
+        glad::glad
         glm::glm
         OpenGL::GL
         SDL3::SDL3-static
