@@ -251,12 +251,14 @@ void Program::draw(const std::size_t n_elements) const
     ::gl::glDrawArrays(
         m_drawing_mode, 0, static_cast<::gl::GLsizei>(n_elements));
 
+#ifndef NDEBUG
     if (const ::gl::GLenum err = ::gl::glGetError(); err != ::gl::GL_NO_ERROR) {
         throw std::runtime_error(
             "Error during drawing: "
             + std::to_string(
                 static_cast<std::underlying_type_t<::gl::GLenum>>(err)));
     }
+#endif
 }
 
 }  // namespace omelet::glsl

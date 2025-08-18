@@ -7,7 +7,6 @@
 #include <SDL3/SDL_error.h>
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_video.h>
-#include <glbinding-aux/debug.h>
 #include <glbinding/ProcAddress.h>
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/functions.h>
@@ -15,6 +14,10 @@
 #include <imgui.h>
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_sdl3.h>
+
+#ifndef NDEBUG
+    #include <glbinding-aux/debug.h>
+#endif
 
 #include "utilities.hpp"
 
@@ -73,7 +76,9 @@ Window::Window(const std::string &title,
             SDL_GL_GetProcAddress),
         /*resolve_functions=*/true);
 
+#ifndef NDEBUG
     glbinding::aux::enableGetErrorCallback();
+#endif
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
