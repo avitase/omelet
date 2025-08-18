@@ -8,8 +8,6 @@
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_video.h>
 #include <glbinding/ProcAddress.h>
-#include <glbinding/gl/enum.h>
-#include <glbinding/gl/functions.h>
 #include <glbinding/glbinding.h>
 #include <imgui.h>
 #include <imgui_impl_opengl3.h>
