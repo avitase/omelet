@@ -52,16 +52,14 @@ Triangle::Triangle()
           {{.type = ::gl::GL_VERTEX_SHADER, .source = vertex_shader},
            {.type = ::gl::GL_FRAGMENT_SHADER, .source = fragment_shader}},
           {glsl::Program::create_vbo(
-               glsl::Program::FloatingPointAttribute{.name = "in_xy",
-                                                     .idx = 0,
+               glsl::Program::FloatingPointAttribute{.idx = 0,
                                                      .size = 2,
                                                      .type = ::gl::GL_FLOAT,
                                                      .normalized = false,
                                                      .relative_offset = 0},
                glsl::Program::VBOLayout{.stride = 8, .offset = 0}),
            glsl::Program::create_vbo(
-               glsl::Program::FloatingPointAttribute{.name = "in_rgb",
-                                                     .idx = 1,
+               glsl::Program::FloatingPointAttribute{.idx = 1,
                                                      .size = 3,
                                                      .type = ::gl::GL_FLOAT,
                                                      .normalized = false,

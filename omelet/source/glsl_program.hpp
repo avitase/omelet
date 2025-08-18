@@ -18,7 +18,6 @@ class Program final
   public:
     struct IntegerAttribute
     {
-        std::string name;
         ::gl::GLuint idx;
         ::gl::GLint size;
         ::gl::GLenum type;
@@ -27,7 +26,6 @@ class Program final
 
     struct FloatingPointAttribute
     {
-        std::string name;
         ::gl::GLuint idx;
         ::gl::GLint size;
         ::gl::GLenum type;
