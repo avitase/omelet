@@ -81,10 +81,6 @@ Window::Window(const std::string &title,
     ImGui::StyleColorsLight();
     ImGui_ImplSDL3_InitForOpenGL(m_window, m_context);
     ImGui_ImplOpenGL3_Init("#version 460");
-
-    if (multisampling) {
-        ::gl::glEnable(::gl::GL_MULTISAMPLE);
-    }
 }
 
 Window::~Window()
