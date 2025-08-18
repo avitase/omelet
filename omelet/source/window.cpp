@@ -53,7 +53,7 @@ Window::Window(const std::string &title,
         title.c_str(), size.width, size.height, SDL_WINDOW_OPENGL | flags);
 
     if (m_window == nullptr) {
-        const auto &msg = get_sdl_error("SDL could create a Window.");
+        const auto &msg = get_sdl_error("SDL could not create a Window.");
         SDL_Quit();
 
         throw std::runtime_error(msg);
