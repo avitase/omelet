@@ -20,7 +20,10 @@
     },
     {
       "name": "dev",
-      "inherits": "common",
+      "inherits": [
+        "common",
+        "asan"
+      ],
       "binaryDir": "${sourceDir}/build/dev",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
@@ -35,22 +38,6 @@
       "binaryDir": "${sourceDir}/build/dev-clang-tidy",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
-      }
-    },
-    {
-      "name": "profile",
-      "inherits": "common",
-      "binaryDir": "${sourceDir}/build/profile",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
-      }
-    },
-    {
-      "name": "release",
-      "inherits": "common",
-      "binaryDir": "${sourceDir}/build/release",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release"
       }
     }
   ],
