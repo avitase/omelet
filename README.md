@@ -13,8 +13,8 @@ However, none of the files under [`omlete/`](omlete/) should be considered out o
 
 ## How to use it?
 
-Checkout the repository **including its various submodules** and build it with [CMake][5].
-A layman approach (on Linux🐧) is to type:
+Check out the repository **including its various submodules** and build it with [CMake][5].
+A layman's approach (on Linux🐧) is to type:
 
 ```bash
 git clone --recurse-submodules https://github.com/avitase/omelet
@@ -28,7 +28,7 @@ Compiling the dependencies does take some time but will eventually create an exe
 Run it, it's safe!✋
 
 ```
-./install/bin/omelete
+./install/bin/omelete  # in omelet/build/
 ```
 
 You should see a spinning triangle and a [Dear ImGui window][2] with the position of your cursor and an FPS counter. 
@@ -36,7 +36,7 @@ You should see a spinning triangle and a [Dear ImGui window][2] with the positio
 ## How to use it properly?
 
 This template will give you a CMake Superbuild that builds [SDL3][1], [Dear ImGui][2], [glbindings][3], and [GLM][4] as dependencies and the actual SDL3/OpenGL template.
-Typically, building the Superbuild only has to be done once, you can then navigate to [`omelete/`](omelet/) (the subdirectory) and start fouling around here.
+Typically, building the Superbuild only has to be done once, you can then navigate to [`omelete/`](omelet/) (the subdirectory) and start fooling around here.
 
 The subproject [`omelet/`](omelet/) expects to find its dependencies under `build/install`.
 This happens automatically if you use our [CMakeUserPresets.json.EXAMPLE][6] (click on the link to learn more about what this is), e.g., by copying it: 
@@ -53,7 +53,7 @@ cmake --preset=release
 cmake --build --preset=release
 ```
 
-Similar to before, this should install everything under `build/install` and you can now navigate to the subproject [`omelet/`](omelet/).
+As before, this should install everything under `build/install` and you can now navigate to the subproject [`omelet/`](omelet/).
 Here, you'll find again a `CMakeUserPresets.json.EXAMPLE` that sets `CMAKE_PREFIX_PATH` for you and exposes two presets `dev` and `dev-clang-tidy`.
 Feel free to change these presets to your own needs and then run, e.g.,
 
