@@ -2,6 +2,13 @@
 
 This is a highly opinionated [CMake][5] template using *contemporary* C++ to wrap "modern" OpenGL, [SDL3][1], [Dear ImGui][2], [glbindings][3], and [GLM][4].
 
+## Why the name *Omelet*?
+
+Surely it must be some clever acronym, right?
+Well, the **O** and **l** are a nod to **OpenGL**, one of the **e** obviously is Euler's number, and the **m**... well, maybe _math_? Or _matrix_? Or _mystery_?
+Truth is, by the time GitHub prompted me for a project name, I was just hungry.
+An omelet sounded good, and here we are.
+
 ## Template or Library?
 
 Consider this repository as a template that helps you creating a canonical *Hello World* in the context of OpenGL programming: a colorful rotating triangle!
